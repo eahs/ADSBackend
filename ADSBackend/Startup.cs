@@ -25,7 +25,7 @@ namespace ADSBackend
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseMySql(Configuration["DefaultConnection"]);
+                options.UseSqlServer(Configuration.GetConnectionString("ADSBackendContext"));
             });
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
