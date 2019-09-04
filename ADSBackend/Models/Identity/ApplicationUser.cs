@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,13 +16,13 @@ namespace ADSBackend.Models.Identity
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        public virtual string FullName => FirstName.Trim() + " " + LastName.Trim();
+        public virtual string FullName => FirstName.Trim() + " " + LastName?.Trim();
 
         public virtual string GravitarHash()
         {
             MD5 md5Hasher = MD5.Create();
 
-            byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(Email.ToLower()));
+            byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(Email?.ToLower() ?? ""));
 
             StringBuilder sBuilder = new StringBuilder();
 

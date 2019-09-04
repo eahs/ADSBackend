@@ -69,12 +69,18 @@ namespace ADSBackend
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            // seed the IdentityRoles table
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                // seed the AspNetRoles table
                 var roleSeed = new ApplicationRoleSeed(roleManager);
                 roleSeed.CreateRoles();
+
+                // seed the AspNetUsers table
+                var userSeed = new ApplicationUserSeed(userManager);
+                userSeed.CreateAdminUser();
             }
         }
     }
