@@ -14,4 +14,4 @@ Advanced Data Structures mobile API backend boilerplate project
 
 ## Possible Issues
 - Problem: Yellow triangle appears next to Dependencies for the ADSBackend project
-  - Solution: Right click on the "ADSBackend" project and check to see that Target framework is set to .NET Core 2.2.  If it is not select "Install Other Frameworks" and install ".NET Core 2.2" for Visual Studio 2019 SDK.   Make sure to choose x64 SDK.  When finished installing, close and restart Visual Studio 2019. 
+  - Solution: Right click on the "ADSBackend" project and check to see that Target framework is set to .NET Core 3.1.  If it is not select "Install Other Frameworks" and install ".NET Core 3.1" for Visual Studio 2019 SDK.   Make sure to choose x64 SDK.  When finished installing, close and restart Visual Studio 2019. 
