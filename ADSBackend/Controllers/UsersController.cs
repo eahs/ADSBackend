@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ADSBackend.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {

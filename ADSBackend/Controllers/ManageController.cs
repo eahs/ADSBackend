@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 namespace ADSBackend.Controllers
 {
     [Authorize]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]/[action]")]
     public class ManageController : Controller
     {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace ADSBackend.Controllers
 {
     [Authorize]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class AdminController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
