@@ -1,14 +1,18 @@
 ﻿using ADSBackend.Models.ApiModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ADSBackend.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Produces("application/json")]
-    [Route("api")]
+    [Route("api/v1")]
     public class ApiController : Controller
     {
         private readonly Services.Configuration Configuration;
@@ -20,7 +24,8 @@ namespace ADSBackend.Controllers
             _cache = cache;
         }
 
-        // GET: api/News
+        // GET: api/v1/News
+        [AllowAnonymous]  // Don't require JWT authentication to access this method
         [HttpGet("News")]
         public async Task<List<NewsFeedItem>> GetNewsFeed()
         {
@@ -36,6 +41,7 @@ namespace ADSBackend.Controllers
         }
 
         // GET: api/Config
+        [AllowAnonymous]
         [HttpGet("Config")]
         public ConfigResponse GetConfig()
         {
