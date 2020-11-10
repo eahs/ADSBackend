@@ -33,6 +33,11 @@ namespace ADSBackend.Controllers.Api.v1
             _userService = userService;            
         }
 
+        /// <summary>
+        /// Authenticate a member
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public async Task<ApiResponse> Authenticate(AuthenticateRequest model)
