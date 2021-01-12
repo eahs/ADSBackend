@@ -33,6 +33,7 @@ namespace ADSBackend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("ADSBackendContext"));
@@ -51,6 +52,12 @@ namespace ADSBackend
 
             services.AddTransient<Services.Configuration>();
 
+#if DEBUG
+            if (Env.IsDevelopment())
+            {
+                services.AddRazorPages().AddRazorRuntimeCompilation();
+            }
+#endif 
             services.AddMvc();
 
             services.AddSwaggerGen(c =>
@@ -94,7 +101,6 @@ namespace ADSBackend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
