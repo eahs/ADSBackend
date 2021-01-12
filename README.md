@@ -11,6 +11,9 @@ Advanced Data Structures mobile API backend boilerplate project
 - Seed Data
   - When running the project for the first time, the database will be seeded with an admin user.
   - You can log in to this account with the username `admin` and the password `Password123!`. It is _highly_ recommended that you change this password after logging in for the first time.
+  - Secondary API Members will be added to the Members table.  There will be one default user:
+	- Email: user@mydomain.com
+	- Password: Password123!
 
 ## Possible Issues
 - Problem: Yellow triangle appears next to Dependencies for the ADSBackend project
