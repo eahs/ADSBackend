@@ -23,10 +23,20 @@ namespace ADSBackend
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Env { get; set; }
+        public string ConnString { get; set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
+
+            if (Env.IsDevelopment())
+                ConnString = Configuration.GetConnectionString("AppDevelopmentContext");
+            else if (Env.IsStaging())
+                ConnString = Configuration.GetConnectionString("AppStagingContext");
+            else if (Env.IsProduction())
+                ConnString = Configuration.GetConnectionString("AppProductionContext");
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,9 +44,10 @@ namespace ADSBackend
         {
             services.AddCors();
             services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("ADSBackendContext"));
+                options.UseSqlServer(ConnString);
             });
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
