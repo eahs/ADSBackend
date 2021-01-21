@@ -9,19 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using ADSBackend.Services;
 
 namespace ADSBackend.Configuration
 {
-    public class ApplicationDbSeed
+    public class ApplicationDbSeed : ISeeder
     {
-        private readonly ApplicationDbContext _context;
-
-        public ApplicationDbSeed(ApplicationDbContext context)
-        {
-            _context = context;
-
-        }
-
         public string GetJson(string seedFile)
         {
             var file = System.IO.File.ReadAllText(Path.Combine("Configuration", "SeedData", seedFile));
@@ -36,7 +29,7 @@ namespace ADSBackend.Configuration
         /// <param name="jsonFile">JSON encoded array of database records</param>
         /// <param name="dbset">Database dbset to insert into</param>
         /// <param name="preserveOrder">Make sure order is maintained when inserting into database</param>
-        public void SeedDatabase<TEntity>(string jsonFile, DbSet<TEntity> dbset, bool preserveOrder = false) where TEntity : class
+        public void SeedDatabase<TEntity>(ApplicationDbContext _context, string jsonFile, DbSet<TEntity> dbset, bool preserveOrder = false) where TEntity : class
         {
             var records = JsonConvert.DeserializeObject<List<TEntity>>(GetJson(jsonFile));
 
@@ -66,12 +59,12 @@ namespace ADSBackend.Configuration
         /// <param name="jsonFile">JSON encoded array of database records</param>
         /// <param name="dbset">Database dbset to insert into</param>
         /// <param name="matchingProperty">Json files will not have primary id keys, so this is used to check to see if a record already exists in table</param>
-        public void SeedDatabaseOrUpdate<TEntity>(string jsonFile, DbSet<TEntity> dbset, string matchingProperty = null) where TEntity : class
+        public void SeedDatabaseOrUpdate<TEntity>(ApplicationDbContext _context, string jsonFile, DbSet<TEntity> dbset, string matchingProperty = null) where TEntity : class
         {
             var records = dbset.ToList();
             if (records == null || records.Count == 0)
             {
-                SeedDatabase<TEntity>(jsonFile, dbset, true);
+                SeedDatabase<TEntity>(_context, jsonFile, dbset, true);
             }
             else if (matchingProperty != null)
             {
@@ -94,10 +87,11 @@ namespace ADSBackend.Configuration
 
         }
 
-        public void SeedDatabase()
+        public Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            SeedDatabaseOrUpdate<Member>("Members.json", _context.Member, "LastName");
-        }
+            SeedDatabaseOrUpdate<Member>(dbContext, "Members.json", dbContext.Member, "LastName");
 
+            return Task.CompletedTask;
+        }
     }
 }
